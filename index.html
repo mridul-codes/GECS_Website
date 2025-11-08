@@ -12,14 +12,57 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #0a0e1a;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
             color: #e4e6eb;
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
         }
 
+        /* Animated background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            animation: rotate 30s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Glass morphism utility class */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Navbar */
         .navbar {
-            background: #141820;
+            background: rgba(20, 24, 32, 0.8);
+            backdrop-filter: blur(20px);
             padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
@@ -27,7 +70,24 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo svg {
+            filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
         }
 
         .hamburger {
@@ -35,13 +95,15 @@
             flex-direction: column;
             cursor: pointer;
             gap: 5px;
+            z-index: 1001;
         }
 
         .hamburger span {
             width: 25px;
             height: 3px;
-            background: #5894f5;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             transition: all 0.3s;
+            border-radius: 2px;
         }
 
         .hamburger.active span:nth-child(1) {
@@ -63,11 +125,13 @@
             width: 80%;
             max-width: 300px;
             height: 100vh;
-            background: #141820;
-            transition: left 0.3s ease;
+            background: rgba(20, 24, 32, 0.95);
+            backdrop-filter: blur(20px);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 999;
             padding: 80px 0 20px 0;
             overflow-y: auto;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .mobile-menu.active {
@@ -80,10 +144,11 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s;
+            transition: all 0.4s;
             z-index: 998;
         }
 
@@ -98,7 +163,7 @@
         }
 
         .mobile-nav-links li {
-            border-bottom: 1px solid #2d3548;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .mobile-nav-links a {
@@ -111,23 +176,13 @@
 
         .mobile-nav-links a.active,
         .mobile-nav-links a:hover {
-            background: #1a1f2e;
+            background: rgba(59, 130, 246, 0.1);
             color: #3bac9d;
             border-left: 4px solid #3b82f6;
         }
 
         .mobile-quote-btn {
             margin: 1.5rem;
-        }
-
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #5894f5;
         }
 
         .nav-links {
@@ -139,119 +194,234 @@
         .nav-links a {
             color: #b8bdc8;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.5rem 0;
         }
 
-        .nav-links a:hover, .nav-links a.active {
-            color: #3bac9d;
-            font-weight: bold;
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #3b82f6;
         }
 
         .btn-primary {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 8px;
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
             cursor: pointer;
             font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
         }
 
         .btn-primary:hover {
-            background: #2563eb;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.5);
         }
 
         .btn-secondary {
-            background: transparent;
-            color: #578feb;
-            padding: 0.7rem 1.5rem;
-            border: 2px solid #3b82f6;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            color: #3b82f6;
+            padding: 0.8rem 1.8rem;
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 12px;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.4s;
             cursor: pointer;
+            font-weight: 600;
         }
 
         .btn-secondary:hover {
-            background: #578feb;
-            color: white;
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
         }
 
         .hero {
-            background: linear-gradient(135deg, #112250 0%, #487ccf 100%);
-            padding: 5rem 5%;
+            background: linear-gradient(135deg, rgba(17, 34, 80, 0.8) 0%, rgba(72, 124, 207, 0.6) 100%);
+            backdrop-filter: blur(10px);
+            padding: 6rem 5%;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
         }
 
         .hero h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
             color: white;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 2rem;
             color: #e0e7ff;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .hero-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             justify-content: center;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
         .section {
-            padding: 4rem 5%;
+            padding: 5rem 5%;
+            position: relative;
+            z-index: 1;
         }
 
         .section-title {
             text-align: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
-            color: #f0f2f5;
+            background: linear-gradient(135deg, #fff 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .section-subtitle {
             text-align: center;
             color: #b8bdc8;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
         }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
 
         .service-card {
-            background: #1a1f2e;
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #2d3548;
-            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
         }
 
         .service-card:hover {
-            transform: translateY(-5px);
-            border-color: #3b82f6;
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+            transform: translateY(-10px);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 16px 48px rgba(59, 130, 246, 0.3);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .service-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #3b82f6;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .service-card h3 {
             margin-bottom: 1rem;
-            color: #f0f2f5;
+            color: #fff;
+            font-size: 1.4rem;
+            position: relative;
         }
 
         .service-list {
@@ -259,67 +429,113 @@
         }
 
         .service-list li {
-            padding: 0.5rem 0;
+            padding: 0.7rem 0;
             color: #b8bdc8;
             display: flex;
             align-items: center;
+            transition: color 0.3s;
+        }
+
+        .service-list li:hover {
+            color: #3b82f6;
         }
 
         .service-list li:before {
             content: "✓";
             color: #10b981;
-            margin-right: 0.5rem;
+            margin-right: 0.8rem;
             font-weight: bold;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
         }
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
 
         .stat-card {
             text-align: center;
-            padding: 2rem;
-            background: #1a1f2e;
-            border-radius: 12px;
-            border: 1px solid #2d3548;
+            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .stat-card:hover::after {
+            opacity: 1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 36px rgba(59, 130, 246, 0.3);
         }
 
         .stat-number {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: bold;
-            color: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 0.5rem;
         }
 
         .stat-label {
-            color: #b8bdc8;
+            color: #e0e7ff;
+            font-weight: 600;
         }
 
         .reviews-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
 
         .review-card {
-            background: #1a1f2e;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
             padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #2d3548;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 36px rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.3);
         }
 
         .stars {
             color: #fbbf24;
             margin-bottom: 1rem;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
         }
 
         .reviewer-name {
             font-weight: bold;
-            color: #f0f2f5;
+            color: #fff;
             margin-bottom: 0.25rem;
         }
 
@@ -333,414 +549,67 @@
             color: #3b82f6;
             font-size: 0.9rem;
             margin-bottom: 1rem;
+            font-weight: 600;
         }
 
         .review-text {
-            color: #b8bdc8;
+            color: #d1d5db;
             font-style: italic;
-        }
-
-        .contact-section {
-            background: #141820;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .contact-card {
-            background: #1a1f2e;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid #2d3548;
-            text-align: center;
-        }
-
-        .contact-icon {
-            font-size: 2rem;
-            color: #3b82f6;
-            margin-bottom: 1rem;
-        }
-
-        .contact-card h3 {
-            margin-bottom: 0.5rem;
-            color: #f0f2f5;
-        }
-
-        .contact-card p {
-            color: #b8bdc8;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-link {
-            color: #3b82f6;
-            text-decoration: none;
-        }
-
-        .contact-link:hover {
-            text-decoration: underline;
-        }
-
-        .form-section {
-            background: #1a1f2e;
-            padding: 3rem;
-            border-radius: 12px;
-            margin-top: 3rem;
-            border: 1px solid #2d3548;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #f0f2f5;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #2d3548;
-            border-radius: 8px;
-            background: #0a0e1a;
-            color: #e4e6eb;
-            font-size: 1rem;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
-
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .offers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .offer-card {
-            background: #1a1f2e;
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #2d3548;
-            position: relative;
-        }
-
-        .offer-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #10b981;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-
-        .offer-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .offer-card h3 {
-            margin-bottom: 1rem;
-            color: #f0f2f5;
-        }
-
-        .offer-card p {
-            color: #b8bdc8;
-            margin-bottom: 1rem;
-        }
-
-        .offer-terms {
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
-        .benefits-box {
-            background: #1a1f2e;
-            padding: 2rem;
-            border-radius: 12px;
-            border: 2px solid #3b82f6;
-            margin-top: 3rem;
-        }
-
-        .benefits-title {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #f0f2f5;
-        }
-
-        .benefits-list {
-            list-style: none;
-        }
-
-        .benefits-list li {
-            padding: 0.7rem 0;
-            color: #b8bdc8;
-            display: flex;
-            align-items: center;
-        }
-
-        .benefits-list li:before {
-            content: "✓";
-            color: #10b981;
-            margin-right: 1rem;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .steps-box {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            padding: 3rem;
-            border-radius: 12px;
-            margin-top: 3rem;
-            color: white;
-        }
-
-        .steps-title {
-            text-align: center;
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-        }
-
-        .step {
-            margin-bottom: 1.5rem;
-        }
-
-        .step strong {
-            color: #e0e7ff;
-        }
-
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .portfolio-card {
-            background: #1a1f2e;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #2d3548;
-            transition: all 0.3s;
-        }
-
-        .portfolio-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
-        }
-
-        .portfolio-image {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: rgba(255,255,255,0.3);
-        }
-
-        .portfolio-content {
-            padding: 1.5rem;
-        }
-
-        .portfolio-content h3 {
-            margin-bottom: 0.5rem;
-            color: #f0f2f5;
-        }
-
-        .portfolio-content p {
-            color: #b8bdc8;
-        }
-
-        .about-content {
-            background: #1a1f2e;
-            padding: 3rem;
-            border-radius: 12px;
-            margin-top: 2rem;
-            border: 1px solid #2d3548;
-        }
-
-        .about-content p {
-            color: #b8bdc8;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .value-card {
-            background: #1a1f2e;
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #2d3548;
-            text-align: center;
-        }
-
-        .value-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #3b82f6;
-        }
-
-        .value-card h3 {
-            margin-bottom: 1rem;
-            color: #f0f2f5;
-        }
-
-        .value-card p {
-            color: #b8bdc8;
-        }
-
-        .mission-box {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            padding: 3rem;
-            border-radius: 12px;
-            margin-top: 3rem;
-            text-align: center;
-            color: white;
-        }
-
-        .mission-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .mission-box h2 {
-            margin-bottom: 1.5rem;
-        }
-
-        .mission-box p {
-            color: #e0e7ff;
-            line-height: 1.8;
-        }
-
-        .info-box {
-            background: #1a1f2e;
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #3b82f6;
-            margin-bottom: 3rem;
-        }
-
-        .info-box p {
-            color: #b8bdc8;
-            margin-bottom: 0.5rem;
-        }
-
-        .quick-response {
-            background: #1a1f2e;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid #3b82f6;
-            margin-top: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .quick-response-icon {
-            font-size: 2rem;
-            color: #3b82f6;
-        }
-
-        .rating-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .rating-stars {
-            font-size: 2rem;
-            color: #fbbf24;
-            margin-bottom: 0.5rem;
-        }
-
-        .rating-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #3b82f6;
+            line-height: 1.7;
         }
 
         .banner {
-            background: linear-gradient(135deg, #000e0a 0%, #10b981 100%);
-            padding: 3rem 5%;
+            background: linear-gradient(135deg, rgba(0, 14, 10, 0.8) 0%, rgba(16, 185, 129, 0.6) 100%);
+            backdrop-filter: blur(10px);
+            padding: 4rem 5%;
             text-align: center;
             color: white;
+            border-radius: 20px;
+            margin: 3rem 5%;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .banner h2 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
-        /* Desktop Get a Quote button - visible by default */
-.desktop-quote-btn {
-    display: inline-block;
-}
+        .desktop-quote-btn {
+            display: inline-block;
+        }
 
         @media (max-width: 768px) {
-    /* Hide desktop navigation */
-    .nav-links {
-        display: none;
-    }
-    
-    /* Hide desktop Get a Quote button */
-    .desktop-quote-btn {
-        display: none !important;
-    }
-    
-    /* Show hamburger menu */
-    .hamburger {
-        display: flex;
-    }
+            .nav-links {
+                display: none;
+            }
+            
+            .desktop-quote-btn {
+                display: none !important;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
 
-    /* Adjust hero text sizes for mobile */
-    .hero h1 {
-        font-size: 2rem;
-    }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
 
-    .section-title {
-        font-size: 1.5rem;
-    }
-    
-    /* Make buttons stack vertically */
-    .hero-buttons {
-        flex-direction: column;
-    }
-    
-    /* Adjust grid layouts for mobile */
-    .services-grid,
-    .stats,
-    .reviews-grid,
-    .contact-grid,
-    .offers-grid,
-    .portfolio-grid,
-    .values-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .services-grid,
+            .stats,
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
         .page {
             display: none;
@@ -748,59 +617,67 @@
 
         .page.active {
             display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Scroll reveal animation */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
-    <div class="logo">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
-        </svg>
-        GECS
-    </div>
-    
-    <!-- Hamburger menu button for mobile -->
-    <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    
-    <!-- Desktop navigation -->
-    <ul class="nav-links">
-        <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
-        <li><a href="#" class="nav-link" data-page="services">Services</a></li>
-        <li><a href="#" class="nav-link" data-page="about">About</a></li>
-        <li><a href="#" class="nav-link" data-page="portfolio">Portfolio</a></li>
-        <li><a href="#" class="nav-link" data-page="reviews">Reviews</a></li>
-        <li><a href="#" class="nav-link" data-page="offers">Offers</a></li>
-        <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
-    </ul>
-    
-    <!-- Desktop Get a Quote button -->
-    <a href="#" class="btn-primary desktop-quote-btn" data-page="contact">Get a Quote</a>
-</nav>
+        <div class="logo">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
+            </svg>
+            GECS
+        </div>
+        
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+            <li><a href="#" class="nav-link" data-page="services">Services</a></li>
+            <li><a href="#" class="nav-link" data-page="about">About</a></li>
+            <li><a href="#" class="nav-link" data-page="reviews">Reviews</a></li>
+            <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+        </ul>
+        
+        <a href="#" class="btn-primary desktop-quote-btn" data-page="contact">Get a Quote</a>
+    </nav>
 
-<!-- Mobile menu overlay -->
-<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
-<!-- Mobile side menu -->
-<div class="mobile-menu" id="mobileMenu">
-    <ul class="mobile-nav-links">
-        <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
-        <li><a href="#" class="nav-link" data-page="services">Services</a></li>
-        <li><a href="#" class="nav-link" data-page="about">About</a></li>
-        <li><a href="#" class="nav-link" data-page="portfolio">Portfolio</a></li>
-        <li><a href="#" class="nav-link" data-page="reviews">Reviews</a></li>
-        <li><a href="#" class="nav-link" data-page="offers">Offers</a></li>
-        <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
-    </ul>
-    <div class="mobile-quote-btn">
-        <a href="#" class="btn-primary" data-page="contact" style="display: block; text-align: center;">Get a Quote</a>
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+            <li><a href="#" class="nav-link" data-page="services">Services</a></li>
+            <li><a href="#" class="nav-link" data-page="about">About</a></li>
+            <li><a href="#" class="nav-link" data-page="reviews">Reviews</a></li>
+            <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+        </ul>
+        <div class="mobile-quote-btn">
+            <a href="#" class="btn-primary" data-page="contact" style="display: block; text-align: center;">Get a Quote</a>
+        </div>
     </div>
-</div>
-
 
     <!-- HOME PAGE -->
     <div id="home" class="page active">
@@ -815,23 +692,23 @@
         </section>
 
         <section class="section">
-            <h2 class="section-title">Our Core Services</h2>
-            <p class="section-subtitle">Comprehensive electrical and appliance solutions for your home and business</p>
+            <h2 class="section-title scroll-reveal">Our Core Services</h2>
+            <p class="section-subtitle scroll-reveal">Comprehensive electrical and appliance solutions for your home and business</p>
             
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card glass-hover scroll-reveal">
                     <div class="service-icon">⚡</div>
                     <h3>Electrical Services</h3>
                     <p>Complete electrical solutions including panel repair, socket installation, lighting, power restoration, and security systems.</p>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card glass-hover scroll-reveal">
                     <div class="service-icon">🛡️</div>
                     <h3>Appliance Services</h3>
                     <p>AC installation & servicing, refrigerators, washing machine, geyser repairs and all electrical items.</p>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card glass-hover scroll-reveal">
                     <div class="service-icon">🕐</div>
                     <h3>Tender & Bulk Projects</h3>
                     <p>Supply of ACs, LT line installations, and various electrical equipment for large-scale projects.</p>
@@ -840,32 +717,32 @@
         </section>
 
         <section class="section">
-            <h2 class="section-title">Why Choose Us?</h2>
-            <p class="section-subtitle">Value for money, affordable rates, and full support</p>
+            <h2 class="section-title scroll-reveal">Why Choose Us?</h2>
+            <p class="section-subtitle scroll-reveal">Value for money, affordable rates, and full support</p>
             
             <div class="stats">
-                <div class="stat-card">
+                <div class="stat-card glass scroll-reveal">
                     <div class="service-icon">🏆</div>
                     <div class="stat-number">27 Years</div>
                     <div class="stat-label">Experience</div>
                     <p style="margin-top: 1rem; color: #b8bdc8;">Nearly three decades of trusted electrical service excellence</p>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card glass scroll-reveal">
                     <div class="service-icon">👥</div>
                     <div class="stat-number">Expert Team</div>
                     <div class="stat-label">5-member skilled team</div>
                     <p style="margin-top: 1rem; color: #b8bdc8;">Ready to handle any electrical challenge</p>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card glass scroll-reveal">
                     <div class="service-icon">💰</div>
                     <div class="stat-number">No Hidden</div>
                     <div class="stat-label">Charges</div>
                     <p style="margin-top: 1rem; color: #b8bdc8;">Transparent pricing with affordable and reasonable rates</p>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card glass scroll-reveal">
                     <div class="service-icon">⚡</div>
                     <div class="stat-number">Quick</div>
                     <div class="stat-label">Response</div>
@@ -874,10 +751,10 @@
             </div>
         </section>
 
-        <div class="banner">
+        <div class="banner scroll-reveal">
             <h2>Special Festive & Summer Offers!</h2>
             <p>Get 5% OFF on all services during festive seasons and summer</p>
-            <a href="#" class="btn-secondary" data-page="offers" style="margin-top: 1rem; display: inline-block; border-color: white; color: white;">View Offers</a>
+            <a href="#" class="btn-secondary" data-page="contact" style="margin-top: 1rem; display: inline-block; border-color: white; color: white;">View Offers</a>
         </div>
     </div>
 
@@ -886,7 +763,7 @@
         <section class="hero">
             <h1>Our Comprehensive Services</h1>
             <p>Professional electrical and appliance solutions across Kamrup and Nalbari</p>
-            <p style="font-size: 1rem; margin-top: 0.5rem;">27 years of experience • E-number expert team • Affordable rates • Tender work accepted</p>
+            <p style="font-size: 1rem; margin-top: 0.5rem;">27 years of experience • Expert team • Affordable rates • Tender work accepted</p>
         </section>
 
         <section class="section">
@@ -894,62 +771,58 @@
             <p class="section-subtitle">From installations to repairs, we handle all your electrical needs</p>
 
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card glass-hover">
                     <div class="service-icon">⚡</div>
                     <h3>Electrical Engineering Services</h3>
                     <ul class="service-list">
                         <li>Electrical panel repair</li>
-                        <li>Electrical panel replacement or upgrading</li>
-                        <li>Electrical power restoration</li>
-                        <li>Electrical socket and switch installation</li>
-                        <li>Electrical socket relocation</li>
-                        <li>Electrical socket and switch repair</li>
+                        <li>Panel replacement or upgrading</li>
+                        <li>Power restoration</li>
+                        <li>Socket and switch installation</li>
+                        <li>Socket relocation</li>
                         <li>Security system installation</li>
                         <li>Outdoor lighting installation</li>
                     </ul>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card glass-hover">
                     <div class="service-icon">💡</div>
                     <h3>Lighting & Fan Services</h3>
                     <ul class="service-list">
                         <li>Light fixture installation</li>
                         <li>Light fixture repair</li>
-                        <li>Fan installation</li>
-                        <li>Fan repair</li>
+                        <li>Fan installation & repair</li>
                         <li>Indoor lighting solutions</li>
-                        <li>Outdoor lighting installation</li>
                         <li>LED lighting upgrades</li>
                     </ul>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card glass-hover">
                     <div class="service-icon">❄️</div>
                     <h3>AC Services</h3>
                     <ul class="service-list">
                         <li>AC installation</li>
                         <li>AC servicing and cleaning</li>
-                        <li>AC repair</li>
-                        <li>AC maintenance</li>
+                        <li>AC repair & maintenance</li>
                         <li>Split AC installation</li>
                         <li>Window AC installation</li>
                     </ul>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card glass-hover">
                     <div class="service-icon">🏠</div>
                     <h3>Appliance Installation & Repair</h3>
                     <ul class="service-list">
                         <li>Refrigerator repair</li>
                         <li>Washing machine repair</li>
                         <li>Microwave installation and repair</li>
-                        <li>Air electrical appliances repair</li>
+                        <li>All electrical appliances repair</li>
                         <li>Appliance troubleshooting</li>
                         <li>Appliance maintenance</li>
                     </ul>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card glass-hover">
                     <div class="service-icon">🔌</div>
                     <h3>EV Charging Services</h3>
                     <ul class="service-list">
@@ -960,7 +833,7 @@
                     </ul>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card glass-hover">
                     <div class="service-icon">🛡️</div>
                     <h3>Electrical Installation Services</h3>
                     <ul class="service-list">
@@ -974,13 +847,13 @@
             </div>
         </section>
 
-        <section class="section" style="background: #141820;">
-            <div class="benefits-box">
-                <h2 class="benefits-title">Transparent Pricing Policy</h2>
-                <p style="text-align: center; color: #b8bdc8; margin-bottom: 2rem;">We provide accurate quotes only after a thorough site visit or detailed work consultation with our customers.</p>
+        <section class="section">
+            <div class="stat-card glass" style="max-width: 800px; margin: 0 auto; padding: 3rem;">
+                <h2 style="margin-bottom: 1.5rem; color: #fff;">Transparent Pricing Policy</h2>
+                <p style="color: #b8bdc8; margin-bottom: 2rem;">We provide accurate quotes only after a thorough site visit or detailed work consultation with our customers.</p>
                 
-                <h3 style="text-align: center; margin-bottom: 1.5rem; color: #f0f2f5;">Our Pricing Benefits:</h3>
-                <ul class="benefits-list">
+                <h3 style="margin-bottom: 1.5rem; color: #3b82f6;">Our Pricing Benefits:</h3>
+                <ul class="service-list">
                     <li>Affordable and reasonable rates</li>
                     <li>No hidden charges</li>
                     <li>Value for money service</li>
@@ -991,228 +864,115 @@
 
         <section class="section">
             <h2 class="section-title">Tender & Bulk Projects Welcome</h2>
-            <p class="section-subtitle">We specialize in large-scale tender-based projects including:</p>
+            <p class="section-subtitle">We specialize in large-scale tender-based projects</p>
             
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card glass-hover">
                     <h3>AC Supply</h3>
-                    <p>Bulk supply and installation of all conditioning units</p>
+                    <p>Bulk supply and installation of air conditioning units</p>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card glass-hover">
                     <h3>LT Line Installation</h3>
                     <p>Low tension electrical line setup and maintenance</p>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card glass-hover">
                     <h3>Electrical Equipment</h3>
                     <p>Supply of various electrical equipment and components</p>
                 </div>
             </div>
 
-            <p style="text-align: center; margin-top: 2rem; color: #b8bdc8;">For tender inquiries, send your project details to <a href="mailto:gecandsevice@gmail.com" class="contact-link">gecandsevice@gmail.com</a></p>
-        </section>
-
-        <section class="section" style="background: #141820;">
-            <h2 class="section-title">Need Our Services?</h2>
-            <p style="text-align: center; color: #b8bdc8; margin-bottom: 2rem;">Contact us today for a site visit and customized quote</p>
-            <div style="text-align: center;">
-                <a href="#" class="btn-primary" data-page="contact">Request a Quote</a>
-            </div>
+            <p style="text-align: center; margin-top: 2rem; color: #b8bdc8;">For tender inquiries: <a href="mailto:gecandsevice@gmail.com" style="color: #3b82f6; text-decoration: none;">gecandsevice@gmail.com</a></p>
         </section>
     </div>
 
-    <!-- CONTACT PAGE -->
-    <div id="contact" class="page">
+    <!-- ABOUT PAGE -->
+    <div id="about" class="page">
         <section class="hero">
-            <h1>Contact Us</h1>
-            <p>Get in touch for consultation and site visit • We also accept tender-based bulk projects</p>
+            <h1>About Us</h1>
+            <p>Your trusted electrical service partner for over two decades</p>
         </section>
 
         <section class="section">
-            <h2 class="section-title">Get in Touch</h2>
-            <p class="section-subtitle">Have questions or need electrical services? Contact us through any of these channels. Site visit charges: ₹100 within Guwahati; location-wise charges apply for other areas.</p>
-
-            <div class="info-box">
-                <h3 style="color: #f0f2f5; margin-bottom: 1rem;">Tender & Bulk Projects</h3>
-                <p>We accept tender-based projects for supply of ACs, LT line installations, and various electrical equipment. For larger projects, email your work details/tender documents to gecandsevice@gmail.com</p>
-            </div>
-
-            <div class="contact-grid">
-                <div class="contact-card">
-                    <div class="contact-icon">📞</div>
-                    <h3>Phone</h3>
-                    <p>Call us anytime</p>
-                    <a href="tel:+918822845413" class="contact-link">+91 88228 45413</a>
-                </div>
-
-                <div class="contact-card">
-                    <div class="contact-icon">💬</div>
-                    <h3>WhatsApp</h3>
-                    <p>Quick response on WhatsApp</p>
-                    <a href="https://wa.me/918822845413" class="contact-link">+91 88228 45413</a>
-                </div>
-
-                <div class="contact-card">
-                    <div class="contact-icon">✉️</div>
-                    <h3>Email</h3>
-                    <p>Send us an email</p>
-                    <a href="mailto:gecandsevice@gmail.com" class="contact-link">gecandsevice@gmail.com</a>
-                </div>
-
-                <div class="contact-card">
-                    <div class="contact-icon">📍</div>
-                    <h3>Service Areas</h3>
-                    <p>We serve across Assam</p>
-                    <p style="margin-top: 1rem;">Kamrup (Metro & Rural), Nalbari (Expanding)</p>
-                </div>
-            </div>
-
-            <div class="quick-response">
-                <div class="quick-response-icon">⏱️</div>
-                <div>
-                    <h3 style="color: #f0f2f5; margin-bottom: 0.5rem;">Quick Response Time</h3>
-                    <p style="color: #b8bdc8;">We typically respond within 1-2 hours during business hours. For emergencies, call us directly for immediate assistance.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" style="background: #141820;">
-            <h2 class="section-title">Send Us a Message</h2>
-            <p class="section-subtitle">Fill out the form below and we'll get back to you as soon as possible</p>
-
-            <div class="form-section">
-                <form id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" placeholder="Your full name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="your.email@example.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" placeholder="+91 98765 43210" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" placeholder="Describe your electrical service needs..." required></textarea>
-                    </div>
-
-                    <button type="submit" class="btn-primary" style="width: 100%;">Send Message</button>
-                </form>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Why Contact Us?</h2>
+            <h2 class="section-title">Our Story</h2>
             
+            <div class="stat-card glass" style="max-width: 900px; margin: 2rem auto; padding: 3rem; text-align: left;">
+                <p style="color: #d1d5db; margin-bottom: 1.5rem; line-height: 1.8;">Welcome to <strong style="color: #3b82f6;">Guwahati Electrical Complaint Service</strong>, your trusted partner for all electrical and appliance solutions in Assam. With an impressive <strong style="color: #3b82f6;">27 years of experience</strong>, we have been proudly serving Kamrup (Metro and Rural areas) with dedication and quick response times.</p>
+
+                <p style="color: #d1d5db; margin-bottom: 1.5rem; line-height: 1.8;">What started as a small electrical service has grown into a comprehensive solution provider, handling everything from simple repairs to complex installations, AC servicing, appliance repairs, modern EV charging installations, and even tender-based projects.</p>
+
+                <p style="color: #d1d5db; line-height: 1.8;">We are now <strong style="color: #10b981;">expanding our services to Nalbari</strong>, bringing our commitment to <strong>affordable rates, transparent pricing with no hidden charges</strong>, and <strong>quick response times</strong> to more communities.</p>
+            </div>
+
             <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number">₹100</div>
-                    <div class="stat-label">Site Visit within Guwahati</div>
-                    <p style="margin-top: 1rem; color: #b8bdc8;">Location-wise charges apply for other areas</p>
+                <div class="stat-card glass">
+                    <div class="stat-number">27+</div>
+                    <div class="stat-label">Years Experience</div>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-number">Quick</div>
-                    <div class="stat-label">Response Time</div>
-                    <p style="margin-top: 1rem; color: #b8bdc8;">Fast service response with full support</p>
+                <div class="stat-card glass">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Expert Team Members</div>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">Hidden Charges</div>
-                    <p style="margin-top: 1rem; color: #b8bdc8;">Transparent pricing with affordable rates</p>
+                <div class="stat-card glass">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Service Areas</div>
+                </div>
+
+                <div class="stat-card glass">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Happy Customers</div>
                 </div>
             </div>
         </section>
-    </div>
 
-    <!-- OFFERS PAGE -->
-    <div id="offers" class="page">
+        <section class="section">
+            <h2 class="section-title">Our Core Values</h2>
+            <p class="section-subtitle">What makes us different and trusted</p>
+
+            <div class="services-grid">
+                <div class="service-card glass-hover">
+                    <div class="service-icon">🛡️</div>
+                    <h3>Quality & Safety</h3>
+                    <p>We prioritize safety in every job and deliver quality workmanship that lasts.</p>
+                </div>
+
+                <div class="service-card glass-hover">
+                    <div class="service-icon">💙</div>
+                    <h3>Customer First</h3>
+                    <p>Your satisfaction is our priority. We provide full support from start to finish.</p>
+                </div>
+
+                <div class="service-card glass-hover">
+                    <div class="service-icon">🎯</div>
+                    <h3>Professional Excellence</h3>
+                    <p>27 years of experience backing every service we provide to you.</p>
+                </div>
+
+                <div class="service-card glass-hover">
+                    <div class="service-icon">⚡</div>
+                    <h3>Quick Response</h3>
+                    <p>We understand electrical emergencies. Our team responds quickly to your needs.</p>
+                </div>
+            </div>
+        </section>
+
         <div class="banner">
-            <h2>Save more on our already affordable services!</h2>
+            <div class="service-icon" style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+            <h2>Our Mission</h2>
+            <p style="max-width: 800px; margin: 0 auto; line-height: 1.8;">To provide reliable, affordable, and high-quality electrical and appliance services to every household and business in our service areas. We strive to be your first choice for electrical solutions.</p>
         </div>
-
-        <section class="section">
-            <h2 class="section-title">Active Offers</h2>
-            <p class="section-subtitle">Enjoy special discounts on quality electrical services</p>
-
-            <div class="offers-grid">
-                <div class="offer-card">
-                    <span class="offer-badge">5% OFF</span>
-                    <div class="offer-icon">🎉</div>
-                    <h3>Festive Season Special</h3>
-                    <p>Celebrate festivals with us! Get 5% discount on all electrical and appliance services during festive seasons.</p>
-                    <p style="margin-top: 1rem;">📅 During all major festivals</p>
-                    <p class="offer-terms" style="margin-top: 1rem;">Terms: Applicable on total bill amount</p>
-                </div>
-
-                <div class="offer-card">
-                    <span class="offer-badge">5% OFF</span>
-                    <div class="offer-icon">☀️</div>
-                    <h3>Summer Cooling Offer</h3>
-                    <p>Beat the heat with savings! Special 5% discount on all AC installation, servicing, and repair services.</p>
-                    <p style="margin-top: 1rem;">📅 Summer season (March - June)</p>
-                    <p class="offer-terms" style="margin-top: 1rem;">Terms: Valid for AC-related services only</p>
-                </div>
-            </div>
-
-            <div class="benefits-box">
-                <h2 class="benefits-title">💎 Offer Benefits</h2>
-                <ul class="benefits-list">
-                    <li>No minimum order value required</li>
-                    <li>Can be combined with our already affordable rates</li>
-                    <li>Applicable on labor and material costs</li>
-                    <li>No hidden charges or conditions</li>
-                    <li>Same quality service guaranteed</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section" style="background: #141820;">
-            <div class="steps-box">
-                <div class="mission-icon">🎯</div>
-                <h2 class="steps-title">How to Avail These Offers?</h2>
-                
-                <div class="step">
-                    <strong>Step 1:</strong> Contact us via phone, WhatsApp, or our contact form
-                </div>
-                <div class="step">
-                    <strong>Step 2:</strong> Mention the offer when discussing your requirements
-                </div>
-                <div class="step">
-                    <strong>Step 3:</strong> Schedule a free site visit for accurate quote
-                </div>
-                <div class="step">
-                    <strong>Step 4:</strong> Get your discount applied automatically to the final bill
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Ready to Save on Quality Service?</h2>
-            <p class="section-subtitle">Contact us now to take advantage of these special offers</p>
-            <div style="text-align: center;">
-                <a href="#" class="btn-primary" data-page="contact">Contact Us Now</a>
-            </div>
-        </section>
     </div>
 
     <!-- REVIEWS PAGE -->
     <div id="reviews" class="page">
         <section class="hero">
-            <div class="rating-header">
-                <div class="rating-stars">⭐⭐⭐⭐⭐</div>
-                <div class="rating-number">4.8</div>
-                <h1>Trusted by Thousands</h1>
-                <p>27 years of building trust and delivering excellence across Kamrup</p>
-            </div>
+            <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+            <div class="stat-number" style="font-size: 3.5rem; margin: 1rem 0;">4.8</div>
+            <h1>Trusted by Thousands</h1>
+            <p>27 years of building trust and delivering excellence across Kamrup</p>
         </section>
 
         <section class="section">
@@ -1264,40 +1024,23 @@
                     <div class="service-type">EV Charger Installation</div>
                     <p class="review-text">"Modern service for modern needs! They installed an EV charging point at my home. The team is knowledgeable and the pricing was transparent."</p>
                 </div>
-
-                <div class="review-card">
-                    <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <div class="reviewer-name">Sunita Devi</div>
-                    <div class="reviewer-location">Kamrup Metro</div>
-                    <div class="service-type">Fan & Light Installation</div>
-                    <p class="review-text">"Very satisfied with their service. They installed ceiling fans and lights throughout my house. Clean work and friendly team members."</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" style="background: #141820;">
-            <div style="text-align: center; padding: 3rem 0;">
-                <div class="mission-icon">📝</div>
-                <h2 class="section-title">More Reviews on Google Maps</h2>
-                <p style="color: #b8bdc8; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Check out our complete collection of verified customer reviews and ratings on Google Maps. See what hundreds of satisfied customers have to say about our services!</p>
-                <a href="#" class="btn-secondary">View Google Reviews</a>
             </div>
         </section>
 
         <section class="section">
             <div class="stats">
-                <div class="stat-card">
+                <div class="stat-card glass">
                     <div class="stat-number">100%</div>
                     <div class="stat-label">Customer Satisfaction</div>
                 </div>
 
-                <div class="stat-card">
-                    <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+                <div class="stat-card glass">
+                    <div class="stars" style="margin-bottom: 0.5rem;">⭐⭐⭐⭐⭐</div>
                     <div class="stat-number">4.8</div>
                     <div class="stat-label">Average Rating</div>
                 </div>
 
-                <div class="stat-card">
+                <div class="stat-card glass">
                     <div class="stat-number">500+</div>
                     <div class="stat-label">Happy Reviews</div>
                 </div>
@@ -1305,184 +1048,73 @@
         </section>
     </div>
 
-    <!-- PORTFOLIO PAGE -->
-    <div id="portfolio" class="page">
+    <!-- CONTACT PAGE -->
+    <div id="contact" class="page">
         <section class="hero">
-            <h1>Our Completed Projects</h1>
-            <p>Thousands of successful installations and repairs across Kamrup</p>
+            <h1>Contact Us</h1>
+            <p>Get in touch for consultation and site visit</p>
+            <p style="font-size: 1rem; margin-top: 0.5rem;">We also accept tender-based bulk projects</p>
         </section>
 
         <section class="section">
-            <div class="portfolio-grid">
-                <div class="portfolio-card">
-                    <div class="portfolio-image">🔌</div>
-                    <div class="portfolio-content">
-                        <h3>Electrical Panel Installations</h3>
-                        <p>Modern electrical panel upgrades and replacements</p>
-                    </div>
-                </div>
+            <h2 class="section-title">Get in Touch</h2>
+            <p class="section-subtitle">Have questions or need electrical services? Contact us through any of these channels</p>
 
-                <div class="portfolio-card">
-                    <div class="portfolio-image">❄️</div>
-                    <div class="portfolio-content">
-                        <h3>AC Installation & Servicing</h3>
-                        <p>Professional AC installations and maintenance work</p>
-                    </div>
-                </div>
-
-                <div class="portfolio-card">
-                    <div class="portfolio-image">💡</div>
-                    <div class="portfolio-content">
-                        <h3>Lighting Solutions</h3>
-                        <p>Indoor and outdoor lighting installations</p>
-                    </div>
-                </div>
-
-                <div class="portfolio-card">
-                    <div class="portfolio-image">🔋</div>
-                    <div class="portfolio-content">
-                        <h3>EV Charging Stations</h3>
-                        <p>Electric vehicle charging boot installations</p>
-                    </div>
-                </div>
-
-                <div class="portfolio-card">
-                    <div class="portfolio-image">🔧</div>
-                    <div class="portfolio-content">
-                        <h3>Appliance Repairs</h3>
-                        <p>Refrigerators, washing machines, and geysers</p>
-                    </div>
-                </div>
-
-                <div class="portfolio-card">
-                    <div class="portfolio-image">📋</div>
-                    <div class="portfolio-content">
-                        <h3>Tender Projects</h3>
-                        <p>Bulk supply of ACs, LT line installations, and electrical equipment</p>
-                    </div>
-                </div>
+            <div class="stat-card glass" style="max-width: 800px; margin: 0 auto 3rem; padding: 2rem;">
+                <h3 style="color: #3b82f6; margin-bottom: 1rem;">Tender & Bulk Projects</h3>
+                <p style="color: #d1d5db;">We accept tender-based projects for supply of ACs, LT line installations, and various electrical equipment. For larger projects, email your work details to gecandsevice@gmail.com</p>
             </div>
 
-            <div style="margin-top: 4rem; text-align: center; background: #1a1f2e; padding: 3rem; border-radius: 12px; border: 1px solid #2d3548;">
-                <div class="mission-icon">📸</div>
-                <h2 style="margin-bottom: 1rem;">View Our Full Gallery</h2>
-                <p style="color: #b8bdc8; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">We have an extensive collection of our completed projects and work. Contact us to view detailed photos of our installations, repairs, and satisfied customers.</p>
-                <a href="#" class="btn-primary" data-page="contact">Contact Us to View Photos</a>
+            <div class="services-grid">
+                <div class="service-card glass-hover">
+                    <div class="service-icon">📞</div>
+                    <h3>Phone</h3>
+                    <p style="color: #b8bdc8; margin: 1rem 0;">Call us anytime</p>
+                    <a href="tel:+918822845413" style="color: #3b82f6; text-decoration: none; font-weight: 600;">+91 88228 45413</a>
+                </div>
+
+                <div class="service-card glass-hover">
+                    <div class="service-icon">💬</div>
+                    <h3>WhatsApp</h3>
+                    <p style="color: #b8bdc8; margin: 1rem 0;">Quick response on WhatsApp</p>
+                    <a href="https://wa.me/918822845413" style="color: #3b82f6; text-decoration: none; font-weight: 600;">+91 88228 45413</a>
+                </div>
+
+                <div class="service-card glass-hover">
+                    <div class="service-icon">✉️</div>
+                    <h3>Email</h3>
+                    <p style="color: #b8bdc8; margin: 1rem 0;">Send us an email</p>
+                    <a href="mailto:gecandsevice@gmail.com" style="color: #3b82f6; text-decoration: none; font-weight: 600;">gecandsevice@gmail.com</a>
+                </div>
+
+                <div class="service-card glass-hover">
+                    <div class="service-icon">📍</div>
+                    <h3>Service Areas</h3>
+                    <p style="color: #b8bdc8; margin: 1rem 0;">We serve across Assam</p>
+                    <p style="color: #3b82f6; font-weight: 600;">Kamrup (Metro & Rural), Nalbari</p>
+                </div>
             </div>
         </section>
 
-        <section class="section" style="background: #141820;">
-            <h2 class="section-title">Proven Track Record</h2>
-            
+        <section class="section">
             <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number">1000+</div>
-                    <div class="stat-label">Projects Completed</div>
+                <div class="stat-card glass">
+                    <div class="stat-number">₹100</div>
+                    <div class="stat-label">Site Visit within Guwahati</div>
+                    <p style="margin-top: 1rem; color: #b8bdc8;">Location-wise charges apply for other areas</p>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-number">27+</div>
-                    <div class="stat-label">Years Experience</div>
+                <div class="stat-card glass">
+                    <div class="stat-number">Quick</div>
+                    <div class="stat-label">Response Time</div>
+                    <p style="margin-top: 1rem; color: #b8bdc8;">Fast service response with full support</p>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Customer Satisfaction</div>
+                <div class="stat-card glass">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Hidden Charges</div>
+                    <p style="margin-top: 1rem; color: #b8bdc8;">Transparent pricing with affordable rates</p>
                 </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- ABOUT PAGE -->
-    <div id="about" class="page">
-        <section class="hero">
-            <h1>About Us</h1>
-            <p>Your trusted electrical service partner for over two decades</p>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Our Story</h2>
-            
-            <div class="about-content">
-                <p>Welcome to <strong>Guwahati Electrical Complaint Service</strong>, your trusted partner for all electrical and appliance solutions in Assam. With an impressive <strong>27 years of experience</strong>, we have been proudly serving Kamrup (Metro and Rural areas) with dedication and quick response times.</p>
-
-                <p>What started as a small electrical service has grown into a comprehensive solution provider, handling everything from simple repairs to complex installations, AC servicing, appliance repairs, modern EV charging installations, and even tender-based projects including supply of ACs, LT line installations, and electrical equipment.</p>
-
-                <p>We are now <strong>expanding our services to Nalbari</strong>, bringing our commitment to <strong>affordable rates, transparent pricing with no hidden charges</strong>, and <strong>quick response times</strong> to more communities. Our expansion has been earned through the trust of thousands of satisfied customers who have experienced our exceptional service.</p>
-            </div>
-
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number">27+</div>
-                    <div class="stat-label">Years Experience</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-number">5</div>
-                    <div class="stat-label">Expert Team Members</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Service Areas</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-number">1000+</div>
-                    <div class="stat-label">Happy Customers</div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" style="background: #141820;">
-            <h2 class="section-title">Our Expert Team</h2>
-            <p class="section-subtitle">Our team consists of 5 highly skilled professionals with extensive experience in electrical engineering, appliance repair, and installation services. Each team member is dedicated to providing you with exceptional service and expert solutions.</p>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Our Core Values</h2>
-            <p class="section-subtitle">What makes us different and trusted</p>
-
-            <div class="values-grid">
-                <div class="value-card">
-                    <div class="value-icon">🛡️</div>
-                    <h3>Quality & Safety</h3>
-                    <p>We prioritize safety in every job and deliver quality workmanship that lasts.</p>
-                </div>
-
-                <div class="value-card">
-                    <div class="value-icon">💙</div>
-                    <h3>Customer First</h3>
-                    <p>Your satisfaction is our priority. We provide full support from start to finish.</p>
-                </div>
-
-                <div class="value-card">
-                    <div class="value-icon">🎯</div>
-                    <h3>Professional Excellence</h3>
-                    <p>27 years of experience backing every service we provide to you.</p>
-                </div>
-
-                <div class="value-card">
-                    <div class="value-icon">⚡</div>
-                    <h3>Quick Response</h3>
-                    <p>We understand electrical emergencies. Our team responds quickly to your needs.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" style="background: #141820;">
-            <div class="mission-box">
-                <div class="mission-icon">🎯</div>
-                <h2>Our Mission</h2>
-                <p>To provide reliable, affordable, and high-quality electrical and appliance services to every household and business in our service areas. We strive to be your first choice for electrical solutions by maintaining our commitment to transparency, quick response, and customer satisfaction.</p>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Areas We Serve</h2>
-            <p class="section-subtitle" style="font-size: 1.3rem; color: #3b82f6;">Kamrup Metro • Kamrup Rural • Nalbari (Expanding)</p>
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="#" class="btn-primary" data-page="contact">Contact Us Today</a>
             </div>
         </section>
     </div>
@@ -1504,36 +1136,28 @@
     mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
     
     // Navigation functionality
-    const navLinks = document.querySelectorAll('.nav-link');
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav-links .nav-link');
     const pages = document.querySelectorAll('.page');
 
     function navigateToPage(pageName) {
-        // Hide all pages
         pages.forEach(page => page.classList.remove('active'));
         
-        // Show selected page
         const selectedPage = document.getElementById(pageName);
         if (selectedPage) {
             selectedPage.classList.add('active');
         }
 
-        // Update active nav link in both desktop and mobile menus
         document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
         document.querySelectorAll(`[data-page="${pageName}"].nav-link`).forEach(link => {
             link.classList.add('active');
         });
 
-        // Close mobile menu if open
         if (mobileMenu.classList.contains('active')) {
             toggleMobileMenu();
         }
 
-        // Scroll to top
         window.scrollTo(0, 0);
     }
 
-    // Add click event to all navigation links (desktop and mobile)
     document.querySelectorAll('[data-page]').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -1542,16 +1166,23 @@
         });
     });
 
-    // Form submission
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Thank you for your message! We will get back to you soon.');
-            contactForm.reset();
-        });
-    }
-</script>
+    // Scroll reveal animation
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
 
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-reveal').forEach(el => {
+        observer.observe(el);
+    });
+    </script>
 </body>
 </html>
